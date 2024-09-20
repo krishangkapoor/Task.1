@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xcd9rbh)7c0q4tf4*b=r#+5f87kk_+p2+djk55lma$sg^x-cpc'
+SECRET_KEY = 'django-insecure-wnyw(i$3om_$y*r&r-s53y%z!05=@^u=5uvls7e5zk(wmov6aa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'todo',
-    'drf_yasg',
+    'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,14 +61,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'todo_project.urls'
-
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer', 
-    ),
-}
-
 
 TEMPLATES = [
     {
@@ -86,8 +86,12 @@ WSGI_APPLICATION = 'todo_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'todo_db',  
+        'USER': 'postgres', 
+        'PASSWORD': 'monkey',  
+        'HOST': 'localhost', 
+        'PORT': '5432',  
     }
 }
 
