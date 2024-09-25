@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'todo',
     'drf_spectacular',
+    'django_celery_results'
 ]
 
 REST_FRAMEWORK = {
@@ -88,12 +89,25 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'todo_db',  
-        'USER': 'postgres', 
-        'PASSWORD': 'monkey',  
-        'HOST': 'localhost', 
+        'USER': 'todo_user', 
+        'PASSWORD': 'todo_password',  
+        'HOST': 'db', 
         'PORT': '5432',  
     }
 }
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Email backend settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'krishangkapoor2004@gmail.com'
+EMAIL_HOST_PASSWORD = 'your_password'
 
 
 # Password validation
@@ -136,3 +150,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+
+
+
+
