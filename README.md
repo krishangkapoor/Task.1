@@ -14,7 +14,9 @@ Step 2. Open the command prompt and create an env.  file in the root directory o
 Step 3. Use the below variables for email configuration. Change the configurations to your actual configurations. You can make your app password by going to Gmail security and 
 enabling the 2-step verification. Then go to app passwords and create one.  
 EMAIL_HOST_USER=your_gmail@gmail.com 
+
 EMAIL_HOST_PASSWORD=your_app_password
+
 You can also do the same by going to the settings.py and changing the credentials to your own.
 
 Step 4. Build the docker images and run all the containers (Django app, PostgreSQL, Redis, and Celery) by applying the following command on your cmd. 
