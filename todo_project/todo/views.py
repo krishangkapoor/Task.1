@@ -1,31 +1,20 @@
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets
 from .models import Todo
-from .serializers import TodoSerializer
-from .tasks import send_task_created_email  
+from .serializers import TodoReadSerializer, TodoWriteSerializer, TodoUpdateSerializer
+from .tasks import send_task_created_email
 
-class TodoListCreate(generics.ListCreateAPIView):
+class TodoViewSet(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        task_name = request.data.get('task_name')
-        send_task_created_email.delay(task_name)
-        return response
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return TodoReadSerializer  
+        elif self.action == 'create':
+            return TodoWriteSerializer  
+        elif self.action == 'update' or self.action == 'partial_update':
+            return TodoUpdateSerializer 
+        return TodoReadSerializer  
 
-
-class TodoUpdate(generics.UpdateAPIView):
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
-
-
-class TodoDelete(generics.DestroyAPIView):
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
-
-
-class TodoDetail(generics.RetrieveAPIView):
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
+    def perform_create(self, serializer):
+        todo = serializer.save()  
+        send_task_created_email.delay(todo.task_name)  
