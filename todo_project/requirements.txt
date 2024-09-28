@@ -1,23 +1,34 @@
+# Django framework
 Django==4.2.2
 
+# PostgreSQL adapter for Django
 psycopg2==2.9.3
 
+# Django REST Framework for building APIs
 djangorestframework==3.14.0
 
+# Celery for background task processing
 celery==5.2.7
 
+# Redis as the Celery message broker
 redis==4.4.2
 
+# For managing Celery task results in Django
 django-celery-results==2.5.1
 
+# drf-spectacular for API documentation (Swagger/OpenAPI)
 drf-spectacular==0.23.0
 
+# Email validation (correct version)
 validate-email-address==1.0
 
+# Gunicorn for running Django in production (Optional but recommended for performance)
 gunicorn==20.1.0
 
+# Database URL configuration tool (Optional for simplifying PostgreSQL settings)
 dj-database-url==1.0.0
 
+# For managing environment variables
 python-decouple==3.8
 
 flower==1.0.0
