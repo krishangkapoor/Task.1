@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+            <label for="id_email">Email:</label>
+            {{ form.email }}  <!-- Ensure this renders correctly -->
+            <label for="id_password1">Password:</label>
+            {{ form.password1 }}
+            <label for="id_password2">Confirm Password:</label>
+            {{ form.password2 }}
+            <button type="submit">Register</button>
+        </form>
+
+        <!-- Login Button with Gap -->
+        <form action="{% url 'login' %}" method="get" style="margin-top: 20px;">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

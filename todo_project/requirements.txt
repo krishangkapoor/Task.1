@@ -32,4 +32,9 @@ dj-database-url==1.0.0
 python-decouple==3.8
 
 flower==1.0.0
+
+djangorestframework-simplejwt==5.2.2
+
+django-allauth==0.44.0
+
   

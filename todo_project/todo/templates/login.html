@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Register Button -->
+        <form action="{% url 'register' %}" style="margin-top: 20px;">
+            <button type="submit">Register</button>
+        </form>
+
+        <!-- Forgot Password Link -->
+        <p><a href="{% url 'forgot_password' %}">Forgot Password?</a></p>
+    </div>
+</body>
+</html>
