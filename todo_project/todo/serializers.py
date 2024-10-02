@@ -11,15 +11,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'password', 'password2')
 
     def validate(self, attrs):
-        # Check if the two passwords match
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Passwords do not match."})
         return attrs
 
     def create(self, validated_data):
-        # Remove the password2 field from validated_data
         validated_data.pop('password2')
-        # Create a new user with the validated data and return the user
         user = User.objects.create_user(**validated_data)
         return user
 
@@ -44,13 +41,13 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 class TodoReadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Todo  # No need to move, this is within the class context
+        model = Todo  
         fields = ['id', 'task_name', 'is_done']
 
 
 class TodoWriteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Todo  # No need to move, this is within the class context
+        model = Todo  
         fields = ['task_name', 'is_done']
 
     def create(self, validated_data):
