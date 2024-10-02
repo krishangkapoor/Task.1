@@ -25,10 +25,10 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Include the 'todo' app's URLs (e.g., for todo API endpoints)
+    # Include the 'todo' app's URLs 
     path('api/', include('todo.urls')),  
 
-    # Include Django Allauth URLs for account management (optional, can be removed if not needed)
+    # Include Django Allauth URLs for account management 
     path('accounts/', include('allauth.urls')),
 
     # Schema endpoints for API documentation
@@ -48,17 +48,17 @@ urlpatterns = [
     path('api/todos/<int:pk>/', todo_views.TodoDetailView.as_view(), name='todo_detail'),  # Retrieve/Update/Delete Todos
 
     # HTML-based Authentication endpoints
-    path('', todo_views.home_view, name='index'),  # Redirects to the login or dashboard
+    path('', todo_views.home_view, name='index'),  
     path('register/', todo_views.register_view, name='register'),
     path('login/', todo_views.login_view, name='login'),
     path('logout/', todo_views.logout_view, name='logout'),
     path('forgot-password/', todo_views.forgot_password_view, name='forgot_password'),
     
     # HTML-based TODO management
-    path('todo/', views.todo_list_view, name='todo_list'),  # TODO list view
-    path('todo/create/', views.todo_create_view, name='todo_create'),  # TODO create view
-    path('todo/update/<int:pk>/', views.todo_update_view, name='todo_update'),  # TODO update view
-    path('todo/delete/<int:pk>/', views.todo_delete_view, name='todo_delete'),  # TODO delete view
+    path('todo/', views.todo_list_view, name='todo_list'),  
+    path('todo/create/', views.todo_create_view, name='todo_create'), 
+    path('todo/update/<int:pk>/', views.todo_update_view, name='todo_update'),  
+    path('todo/delete/<int:pk>/', views.todo_delete_view, name='todo_delete'), 
 
     # Password Reset URLs
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
