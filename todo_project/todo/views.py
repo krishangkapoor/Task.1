@@ -26,7 +26,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.permissions import AllowAny
 from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode  # Add this import
+from django.utils.http import urlsafe_base64_decode  
 
 
 def home_view(request):
@@ -41,7 +41,7 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.backend = 'django.contrib.auth.backends.ModelBackend'  # Specify backend
+            user.backend = 'django.contrib.auth.backends.ModelBackend'  
             login(request, user)
             return redirect('todo_list')
     else:
@@ -84,18 +84,15 @@ def forgot_password_view(request):
                 token_generator = PasswordResetTokenGenerator()
 
                 for user in users:
-                    # Generate UID and token
                     uid = urlsafe_base64_encode(force_bytes(user.pk))
                     token = token_generator.make_token(user)
 
-                    # Construct password reset URL
                     reset_link = f"http://{get_current_site(request).domain}{reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})}"
 
-                    # Send email
                     send_mail(
                         subject='Password Reset Requested',
                         message=f'Click the link to reset your password: {reset_link}',
-                        from_email='your-email@gmail.com',  # This should match your EMAIL_HOST_USER in settings
+                        from_email='your-email@gmail.com',  
                         recipient_list=[email],
                         fail_silently=False,
                     )
@@ -129,7 +126,6 @@ class ForgotPasswordView(APIView):
         if not email:
             return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if the user exists with this email
         users = User.objects.filter(email=email)
         if users.exists():
             for user in users:
@@ -138,7 +134,6 @@ class ForgotPasswordView(APIView):
                 token = token_generator.make_token(user)
                 reset_link = f"http://localhost:8000/api/auth/reset-password/{uidb64}/{token}/"
 
-                # Send the reset link via email
                 send_mail(
                     subject='Password Reset Request',
                     message=f'Click the link below to reset your password:\n{reset_link}',
@@ -148,7 +143,6 @@ class ForgotPasswordView(APIView):
                 )
         return Response({"message": "If an account with that email exists, a password reset email has been sent."}, status=status.HTTP_200_OK)
 
-# API-based Reset Password view
 class ResetPasswordView(APIView):
     permission_classes = [AllowAny]
     token_generator = PasswordResetTokenGenerator()
@@ -156,16 +150,13 @@ class ResetPasswordView(APIView):
     def post(self, request, uidb64, token):
         serializer = ResetPasswordSerializer(data=request.data)
         if serializer.is_valid():
-            # Decode the user id
             try:
                 uid = force_str(urlsafe_base64_decode(uidb64))
                 user = User.objects.get(pk=uid)
             except (TypeError, ValueError, OverflowError, User.DoesNotExist):
                 user = None
 
-            # Check if the token is valid
             if user and self.token_generator.check_token(user, token):
-                # Set new password
                 new_password = serializer.validated_data['password']
                 user.set_password(new_password)
                 user.save()
@@ -178,12 +169,11 @@ class ResetPasswordView(APIView):
         Retrieve the user corresponding to the uidb64 and validate the token.
         """
         try:
-            uid = force_str(urlsafe_base64_decode(uidb64))  # Decode the user ID
-            user = User.objects.get(pk=uid)  # Get the user associated with the ID
+            uid = force_str(urlsafe_base64_decode(uidb64))  
+            user = User.objects.get(pk=uid)  
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             return None
 
-        # Check if the token is valid for the user
         if self.token_generator.check_token(user, token):
             return user
         return None
